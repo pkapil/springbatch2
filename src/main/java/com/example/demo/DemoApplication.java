@@ -15,6 +15,7 @@ import org.springframework.batch.integration.async.AsyncItemProcessor;
 import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.batch.BatchAutoConfiguration;
@@ -44,6 +45,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Import({CustomBatchConfigurer.class})
 public class DemoApplication {
 
+
+    @Value("spring.datasource.url")
+    private String url;
+
+    @Value("spring.datasource.username:root")
+    private String username;
+
+    @Value("spring.datasource.password:root")
+    private String password;
 
     @Autowired
     JobRepository jobRepository;
@@ -117,9 +127,9 @@ public class DemoApplication {
     public DataSource dataSource() throws SQLException {
         final SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
         dataSource.setDriver(new com.mysql.jdbc.Driver());
-        dataSource.setUrl("jdbc:mysql://192.168.0.207:3306/test");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
         return dataSource;
     }
 
